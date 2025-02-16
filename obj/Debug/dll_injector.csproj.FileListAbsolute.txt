@@ -1,0 +1,5 @@
+C:\Users\David\source\repos\File_INJECT\bin\Debug\File_INJECT.exe
+C:\Users\David\source\repos\File_INJECT\bin\Debug\File_INJECT.pdb
+C:\Users\David\source\repos\File_INJECT\obj\Debug\dll_injector.csproj.CoreCompileInputs.cache
+C:\Users\David\source\repos\File_INJECT\obj\Debug\File_INJECT.exe
+C:\Users\David\source\repos\File_INJECT\obj\Debug\File_INJECT.pdb
