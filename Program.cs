@@ -1,4 +1,4 @@
-﻿//code written by ciberboy, credit if using
+//code written by ciberboy, credit if using
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -18,11 +18,11 @@ class INJECT_DLL
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-    public static extern IntPtr LoadLibrary(string lpFileName);
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern IntPtr GetModuleHandle(string lpModuleName);
 
     [DllImport("kernel32.dll")]
     public static extern bool CloseHandle(IntPtr hObject);
@@ -32,70 +32,87 @@ class INJECT_DLL
     const uint MEM_RESERVE = 0x00002000;
     const uint PAGE_READWRITE = 0x04;
 
+    static void PauseOnError(string message)
+    {
+        Console.WriteLine($"{message} (error code: {Marshal.GetLastWin32Error()})");
+        Console.WriteLine("press ENTER key to exit...");
+        Console.ReadLine();
+    }
+
     public static void InjectDll(int processId, string dllPath)
     {
         IntPtr hProcess = OpenProcess(PROCESS_ALL_ACCESS, false, processId);
-
         if (hProcess == IntPtr.Zero)
         {
-            Console.WriteLine("problem when opening process");
+            PauseOnError("ERR1: Could not open process.");
             return;
         }
-        IntPtr allocMem = VirtualAllocEx(hProcess, IntPtr.Zero, (uint)((dllPath.Length + 1) * Marshal.SizeOf(typeof(char))), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE); //get memory allocated
-
+        IntPtr allocMem = VirtualAllocEx(hProcess, IntPtr.Zero, (uint)((dllPath.Length + 1) * Marshal.SizeOf(typeof(char))), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
         if (allocMem == IntPtr.Zero)
         {
-            Console.WriteLine("problem allocate memory");
+            PauseOnError("ERR2: Could not allocate memory.");
+            CloseHandle(hProcess);
             return;
         }
-        byte[] buffer = Encoding.Default.GetBytes(dllPath); //dll to byte
+        byte[] buffer = Encoding.ASCII.GetBytes(dllPath + "\0"); 
         uint bytesWritten;
-        if (!WriteProcessMemory(hProcess, allocMem, buffer, (uint)buffer.Length, out bytesWritten)) //write process to memory
+        if (!WriteProcessMemory(hProcess, allocMem, buffer, (uint)buffer.Length, out bytesWritten))
         {
-            Console.WriteLine("error write memory");
+            PauseOnError("ERR3: can't write memory");
+            CloseHandle(hProcess);
             return;
         }
-        IntPtr loadLibraryAddr = GetProcAddress(LoadLibrary("kernel32.dll"), "LoadLibraryA");
+        IntPtr kernel32Handle = GetModuleHandle("kernel32.dll");
+        if (kernel32Handle == IntPtr.Zero)
+        {
+            PauseOnError("ERR4: Could not get handle for kernel32");
+            CloseHandle(hProcess);
+            return;
+        }
+        IntPtr loadLibraryAddr = GetProcAddress(kernel32Handle, "LoadLibraryA");
         if (loadLibraryAddr == IntPtr.Zero)
         {
-            Console.WriteLine("error loadlibraryA");
+            PauseOnError("ERR5: Problem loading LoadLibraryA");
+            CloseHandle(hProcess);
             return;
         }
         IntPtr hThread = CreateRemoteThread(hProcess, IntPtr.Zero, 0, loadLibraryAddr, allocMem, 0, IntPtr.Zero);
-
         if (hThread == IntPtr.Zero)
         {
-            Console.WriteLine("error create remote thred");
+            PauseOnError("ERR6: Couldn't make remote thread!");
+            CloseHandle(hProcess);
             return;
         }
-
-        Console.WriteLine("dll injected correctly :)");
-        CloseHandle(hProcess); //close process handle
-        Console.WriteLine("process handle closed, we dont need it now");
+        Console.WriteLine("dll has been injected!!!");
+        CloseHandle(hThread);  
+        CloseHandle(hProcess); 
     }
+
     static void Main()
     {
-        Console.WriteLine("Welcome to dllinjector, in what process you want to inject DLL??");
+        Console.WriteLine("Welcome to DLL Injector by CiberBoy! You can inject any DLL to a running process...");
+        Console.BackgroundColor = ConsoleColor.Green;
+        Console.WriteLine("WARNING: PLEASE DO NOT INJECT DLLS TO CRITICAL PROCESS OR YOU MAY CAUSE DATA LOSS AND CRASHES!!");
+        Console.WriteLine("Enter the process to do the dll injection:");
         string processP = Console.ReadLine();
-        if (processP == "")
+        if (string.IsNullOrWhiteSpace(processP))
         {
-            Console.WriteLine("you havent entered anything, exiting!!!!");
-            Process.GetCurrentProcess().Kill();
-        }
-        Console.WriteLine("okay, now insert the dll you wanna inject");
-        string dllp = Console.ReadLine();
-        if (dllp == "")
-        {
-            Console.WriteLine("you didn't enter a correct dllpath, exiting");
-            Process.GetCurrentProcess().Kill();
-        }
-        var process = Process.GetProcessesByName(processP); //find process
-        if (process.Length == 0)
-        {
-            Console.WriteLine("the process you put is not running, aborting.");
+            PauseOnError("process name is not correct.");
             return;
         }
-        InjectDll(process[0].Id, dllp);
-        Console.WriteLine("dll inject start!!!");
+        Console.WriteLine("now, introduce the path to the DLL: ");
+        string dllp = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(dllp))
+        {
+            PauseOnError("dll path is incorrect.");
+            return;
+        }
+        var processes = Process.GetProcessesByName(processP);
+        if (processes.Length == 0)
+        {
+            PauseOnError("process doesn't exist");
+            return;
+        }
+        InjectDll(processes[0].Id, dllp);
     }
 }
