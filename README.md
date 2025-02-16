@@ -3,7 +3,7 @@ This is an open-source DLL Injector I coded.
 It is capable of injecting a DLL into a running process that the user specifies by modifying the process in memory to inject the DLL.
 As usual, it needs administrator rights.
 # Compatibility
-This DLL Injector is compatible with Windows XP and forward, but I have only tested on Windows 10.
+This DLL Injector is compatible with Windows XP and forward, but I have only tested on Windows 10 because I'm very lazy.
 It needs NET Framework 4
 # Bug reports
 If you experience any bugs, issues or incompatibilities, please create an issue :)
