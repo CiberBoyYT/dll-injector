@@ -3,3 +3,15 @@ C:\Users\David\source\repos\File_INJECT\bin\Debug\File_INJECT.pdb
 C:\Users\David\source\repos\File_INJECT\obj\Debug\dll_injector.csproj.CoreCompileInputs.cache
 C:\Users\David\source\repos\File_INJECT\obj\Debug\File_INJECT.exe
 C:\Users\David\source\repos\File_INJECT\obj\Debug\File_INJECT.pdb
+G:\Código\File_INJECT\bin\Debug\DllInject.exe
+G:\Código\File_INJECT\bin\Debug\DllInject.pdb
+G:\Código\File_INJECT\obj\Debug\dll_injector.csproj.AssemblyReference.cache
+G:\Código\File_INJECT\obj\Debug\dll_injector.csproj.CoreCompileInputs.cache
+G:\Código\File_INJECT\obj\Debug\DllInject.exe
+G:\Código\File_INJECT\obj\Debug\DllInject.pdb
+F:\Código\File_INJECT\bin\Debug\DllInject.exe
+F:\Código\File_INJECT\bin\Debug\DllInject.pdb
+F:\Código\File_INJECT\obj\Debug\dll_injector.csproj.AssemblyReference.cache
+F:\Código\File_INJECT\obj\Debug\dll_injector.csproj.CoreCompileInputs.cache
+F:\Código\File_INJECT\obj\Debug\DllInject.exe
+F:\Código\File_INJECT\obj\Debug\DllInject.pdb

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada a un ensamblado.
-[assembly: AssemblyTitle("File_INJECT")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DLL Injector")]
+[assembly: AssemblyDescription("DLL injector")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("File_INJECT")]
-[assembly: AssemblyCopyright("Copyright ©  2025")]
+[assembly: AssemblyCompany("CiberBoy")]
+[assembly: AssemblyProduct("DLL Injector")]
+[assembly: AssemblyCopyright("Copyright © CiberBoy 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
