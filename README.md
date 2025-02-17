@@ -5,6 +5,7 @@ As usual, it needs administrator rights.
 # Compatibility
 This DLL Injector is compatible with Windows XP and forward, but I have only tested on Windows 10 because I'm very lazy.
 It needs NET Framework 4
+Starting from v1.2 DLLs written in managed languages (.NET) are supported, in older versions no.
 # Bug reports
 If you experience any bugs, issues or incompatibilities, please create an issue :)
 # For skids ❤️
