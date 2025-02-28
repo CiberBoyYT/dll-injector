@@ -8,7 +8,7 @@ It needs NET Framework 4
 Starting from v1.2 DLLs written in managed languages (.NET) are supported, in older versions no.
 # Bug reports
 If you experience any bugs, issues or incompatibilities, please create an issue :)
-# For skids ❤️
+# Skids, fear me ❤️
 Alright, I know some people will skid my code.
 I added a GNU Public license 3, which means that you can use my code freely in your program 
 but ONLY if you credit me, and you must make your program open source as well.
